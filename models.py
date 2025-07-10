@@ -12,8 +12,11 @@ class Hotel(Base):
     nombre = Column(String, nullable=False)
     ciudad = Column(String, nullable=False)
 
+    habitaciones = relationship("Habitacion", back_populates="hotel")
+
     def __repr__(self):
         return f"<Hotel(id={self.id}, nombre='{self.nombre}', ciudad='{self.ciudad}')>"
+        
     
 #Tabla Habitacion
 class Habitacion(Base):
@@ -24,7 +27,10 @@ class Habitacion(Base):
     tipo = Column(String, nullable=False)         # estándar, premium, VIP
     capacidad = Column(Integer, nullable=False)   # número máximo de personas
 
-    hotel = relationship("Hotel", backref="habitaciones")    
+    hotel = relationship("Hotel", back_populates="habitaciones")
+    disponibilidades = relationship("Disponibilidad", back_populates="habitacion")    
+    reservas = relationship("Reserva", back_populates="habitacion")
+
 
 #Tabla Disponibilidad
 class Disponibilidad(Base):

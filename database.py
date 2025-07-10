@@ -4,7 +4,7 @@ from models import Base
 
 # Reemplaza estos valores con los de tu base de datos
 USER = 'postgres'     
-PASSWORD = 'laura13'
+PASSWORD = 'admin123'
 HOST = 'localhost'
 PORT = '5432'
 DB_NAME = 'reservas_hoteles'
