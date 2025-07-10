@@ -4,8 +4,18 @@ from sqlalchemy.orm import Session
 from database import SessionLocal, engine
 from models import Base, Hotel
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Permitir acceso desde el frontend (HTML)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # en producción, usa ["http://localhost:8000"] o el dominio exacto
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 #Conexion a la base de datos
 def get_db():

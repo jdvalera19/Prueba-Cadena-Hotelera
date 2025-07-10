@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Hoteles</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #eef;
+      margin-bottom: 0.5rem;
+      padding: 0.7rem 1rem;
+      border-radius: 6px;
+    }
+
+    form {
+      margin-top: 1rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lista de Hoteles</h1>
+
+    <ul id="hoteles-lista"></ul>
+
+    <h2>Agregar nuevo hotel</h2>
+    <form id="form-crear">
+      <input type="text" id="nombre" placeholder="Nombre del hotel" required>
+      <input type="text" id="ciudad" placeholder="Ciudad" required>
+      <button type="submit">Crear hotel</button>
+    </form>
+  </div>
+
+  <script>
+    function cargarHoteles() {
+      fetch("http://127.0.0.1:8000/hoteles/")
+        .then(response => response.json())
+        .then(data => {
+          const lista = document.getElementById("hoteles-lista");
+          lista.innerHTML = "";
+          data.forEach(hotel => {
+            const li = document.createElement("li");
+            li.textContent = `${hotel.nombre} - ${hotel.ciudad}`;
+            lista.appendChild(li);
+          });
+        });
+    }
+
+    cargarHoteles();
+
+    document.getElementById("form-crear").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const nombre = document.getElementById("nombre").value;
+      const ciudad = document.getElementById("ciudad").value;
+
+      fetch("http://127.0.0.1:8000/hoteles/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, ciudad })
+      })
+      .then(response => response.json())
+      .then(() => {
+        cargarHoteles();
+        document.getElementById("form-crear").reset();
+      });
+    });
+  </script>
+</body>
+</html>
